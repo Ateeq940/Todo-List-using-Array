@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+<br>
+<br>
+<br>
+<div class="row">
+	<div class="col-lg-3"></div>
+	<div class="col-lg-6" >
+		<div class="container-fluid">
+		 <div class="row">
+		    <div class="col-sm-3">
+		        <input class="form-control" id="inpName">
+		    </div>
+		    <div class="col-sm-3">
+			    <input class="form-control" id="inpAge">
+			</div>
+			<div class="col-sm-3">
+				<input class="form-control" id="inpId">
+			</div>
+			<div class="col-sm-3">
+				<button id="inBtn " class="btn btn-info" onclick="Add()">Add</button>
+			</div>
+		</div>
+	       <table class="table table-bordered">
+				<tr>
+					<th>Name</th>
+					<th>Age</th>
+					<th>ID</th>
+				</tr>
+				<tbody id="mytable" >			
+				</tbody>
+			</table>
+		
+	</div>	
+	</div>
+	<div class="col-lg-3" ></div>
+</div>
+
+
+
+
+	
+  
+	<div class="modal fade" id="myModal" role="dialog">
+	  <div class="modal-dialog modal-sm">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+		  </div>
+		  <div class="modal-body">
+			
+		        <input class="form-control" id="upName">
+                <br>
+			    <input class="form-control" id="upAge">
+			    <br>
+				<input class="form-control" id="upId">
+				<br>
+			    <button class="btn btn-primary" data-dismiss="modal" id="btnid" onclick="btnF()">OK</button>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+ 
+
+
+	<script>
+    
+	
+
+
+		    var personData = [{
+		    name: "John",
+		    age: 20,
+			id:"123445"
+		}, {
+		    name: "Jack",
+		    age: 50,
+			id:"1234475"
+		}, {
+		    name: "Son",
+		    age: 45,
+			id:"12344"
+		}];
+       
+
+		var iname = document.getElementById("inpName");
+		var iage = document.getElementById("inpAge");
+		var iid = document.getElementById("inpId");
+
+    function Add(){
+        var addo = new Object();
+			addo.name = iname.value;
+			addo.age = iage.value;
+			addo.id = iid.value;
+
+			personData = [...personData, addo];
+
+            showdata();
+	}
+	
+
+		showdata();
+	function showdata(){
+		
+        const tableData = personData.map(function(value){
+                    return (
+                        `<tr>
+                            <td>${value.name}</td>
+                            <td>${value.age}</td>
+							<td>${value.id}</td>
+							<td class="text-center"><a class="btn btn-primary" href="route.html?id=${value.id}" role="button">Details</a></td>
+							<td class="text-center"><button class="btn btn-primary" onClick="remove(${value.id})" >Remove</button></td>
+							<td class="text-center"><button type="button" class="btn btn-primary"  onClick="updateopen(${value.id})" data-toggle="modal" data-target="#myModal">Update</button></td>
+                        </tr>`
+                    );
+                }).join('');
+
+		document.getElementById("mytable").innerHTML= tableData;
+
+			}
+	
+		
+function remove(idp){
+	var removeIndex = personData.findIndex(items => items.id == idp);
+	personData.splice(removeIndex,1);
+	showdata();	
+}
+
+        var uname = document.getElementById("upName");
+		var uage = document.getElementById("upAge");
+		var uid = document.getElementById("upId");
+		var btn = document.getElementById("btnid");
+
+
+function updateopen(idp){
+	var showIndex = personData.filter(items => items.id == idp);
+	const showname = showIndex.map( (x) => x.name);
+	const showage = showIndex.map( (x) => x.age);
+	const showid = showIndex.map( (x) => x.id);
+    
+
+	uname.value = showname;
+	uage.value = showage;
+    uid.value = showid;
+	btn.value= idp;
+	
+}
+
+function btnF(){
+      var idp = btn.value;
+      var updateIndex = personData.findIndex(items => items.id == idp);
+	  var addo = new Object();
+	      addo.name = uname.value;
+		  addo.age = uage.value;
+		  addo.id = uid.value;
+
+		  personData.splice(updateIndex,1,addo);
+          showdata();	
+	  
+}
+
+
+// var removeIndex = personData.map(item => item.id == idp);
+	// personData = personData.splice(removeIndex,1);
+// 	removeIndex.remove();
+
+
+
+
+	
+		   
+
+
+
+
+
+
+
+
+
+
+
+
+		  
+    // dataShow(personData);
+		// function dataShow(data){
+		// 	var table = document.getElementById('mytable');		
+		// 	var row = ''; 
+		// 	for (let d of data) {
+		// 		  row += `<tr> 
+		// 			        <td>${d.name}</td> 
+		// 					<td>${d.age}</td> 
+		// 					<td>${d.email}</td> 
+		// 				  </tr>`;	          
+		// 	}
+		// 	table.innerHTML = row;
+		// }
+  
+    // dataShow(personData);
+		// function dataShow(data){
+		// 	var table = document.getElementById('mytable');		
+		// 	var row = ''; 
+		// 	// for (let d of data) {
+		// 	    for (let i = 0; i < personData.length; i++) {	
+		// 		    row += `<tr> 
+		// 			        <td>${data[i].name}</td> 
+		// 					<td>${data[i].age}</td> 
+		// 					<td>${data[i].email}</td> 
+		// 				  </tr>`;	          
+		// 	}
+		// 	table.innerHTML = row;
+		// }
+	
+</script>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
